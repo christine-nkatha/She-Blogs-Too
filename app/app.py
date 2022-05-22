@@ -40,7 +40,7 @@ def registerUser():
 #blog routes 
 @app.route("/")
 def index():
-    return "get all blogs route "
+    return "deployment success \n get all blogs route \n update test"
 
 @app.route("/blog/create")
 def create_blog():
