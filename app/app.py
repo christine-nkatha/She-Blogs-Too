@@ -43,12 +43,12 @@ def loginUser():
 
 @app.route("/signup")
 def registerUser():
-    return "route to register user "
+    return render_template("register.html")
 
 #blog routes 
 @app.route("/")
 def index():
-    return render_template("base.html", all_posts=[], current_user={})
+    return render_template("index.html")
 
 @app.route("/blog/create")
 def create_blog():
