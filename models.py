@@ -2,7 +2,7 @@ from datetime import datetime
 from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app import db, login_manager
+from app.app import db
 
 
 class User(UserMixin, db.Model):
@@ -39,15 +39,16 @@ class User(UserMixin, db.Model):
         }
 
 
-@login_manager.user_loader
-def user_loader(user_id):
-    return User.query.get(user_id)
+# @login_manager.user_loader
+# def user_loader(user_id):
+#     return User.query.get(user_id)
 
 
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
+    subtitle = db.Column(db.String, nullable=False)
     user_id = db.Column(db.String, nullable=False)
     post = db.Column(db.String, nullable=False)
     comment = db.relationship('Comment', backref='post', lazy='dynamic')

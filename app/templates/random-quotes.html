@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2 class=" text-center font-weight-bold text-success mt-3">Random Quotes</p>
+    <div class="row">
+      <div class="w-100 mx-auto text-dark">
+        {% for post in posts %}
+        <div class="post-preview w-75 mx-auto p-3 my-4 border-success rounded border">
+            <h2 class="post-title">
+              {{post.quote}}
+            </h2>
+           
+          <p class="post-meta text-primary text-right my-1 pr-4 ">By {{post.author}}       
+          </p>
+        </div>
+        {% endfor %}
+  
+  
+     
+      </div>
+    </div>
+ 
+
+  {% endblock %}
