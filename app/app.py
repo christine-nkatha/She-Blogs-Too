@@ -3,49 +3,66 @@ from flask_login import login_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from sqlalchemy import false
-from app.forms import LoginForm
+from app.forms import LoginForm, RegisterForm
 import requests
 from flask_ckeditor import CKEditor
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from config import DevelopmentConfig
-
+from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
+
+db.session.commit()
 ckeditor = CKEditor(app)
+migrate = Migrate(app, db)
 
 #ui routes
 @app.route("/login",methods=['POST', 'GET'])
 def loginUser():
     from models import User
-
     form = LoginForm()  
     if request.method == 'POST':
-        if form.validate_on_submit():
-            email = form.email.data
-            password = form.password.data
+        email= request.form['Email']
+        password= request.form['Password']
 
-            user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
 
-            if not user:
-                flash("That email does not exist, please try again.")
-                return redirect(url_for('login'))
-            elif not check_password_hash(user.password, password):
-                flash('Password incorrect, please try again.')
-                return redirect(url_for('login'))
-            else:
-                login_user(user)
-                return redirect(url_for('get_comments'))
-        return redirect(url_for('success', name = user))
+        if not user:
+            flash("That email does not exist, please try again.","error-toast")
+            return redirect(url_for('loginUser'))
+        elif not check_password_hash(user.password, password):
+            flash('Password incorrect, please try again.',"error-toast")
+            return redirect(url_for('loginUser'))
+        else:
+            login_user(user)
+            return redirect(url_for('index'))
+       
 
     return render_template("login.html",form=form)
 
-@app.route("/signup")
+@app.route("/signup",methods=('GET', 'POST'))
 def registerUser():
-    return render_template("register.html")
+    from models import User
+    form = RegisterForm(request.form)
+    if request.method == 'POST' :
+       
+        user = User()
+        user.username= request.form['Name']
+        user.email= request.form['Email']
+        user.set_password(request.form['Password'])
+        try:
+            user.save()
+            flash('Thanks for registering',"success-toast")
+        except:
+            flash('Duplicate user exists',"error-toast")
+            return redirect(url_for('registerUser'))
+        return redirect(url_for('index'))
+    return render_template("register.html",form=form)
 
 #blog routes 
 @app.route("/")

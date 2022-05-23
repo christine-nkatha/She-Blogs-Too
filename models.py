@@ -30,13 +30,7 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f'User: {self.username}'
 
-    def serialize(self):
-        return {
-            'id': self.id, 
-            'name': self.name,
-            'author': self.author,
-            'published':self.published
-        }
+  
 
 
 # @login_manager.user_loader
@@ -48,6 +42,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
+    body = db.Column(db.String, nullable=False)
     subtitle = db.Column(db.String, nullable=False)
     user_id = db.Column(db.String, nullable=False)
     post = db.Column(db.String, nullable=False)
