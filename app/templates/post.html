@@ -1,21 +1,20 @@
-{% extends 'bootstrap/base.html' %}
+{%extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
-
 {% block content %}
-{% include "header.html" %}
+
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('{{post.img_url}}')">
+<header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1638913660106-73b4bac0db09?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80')">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="post-heading">
-                    <h1>{{post.title}}</h1>
-                    <h2 class="subheading">{{post.subtitle}}</h2>
+                    <h1>post title</h1>
+                    <h2 class="subheading">post subtitle</h2>
                     <span class="meta">Posted by
-              {{post.author.name}}
-              on {{post.date}}</span>
+              post author name
+              on post date</span>
                 </div>
             </div>
         </div>
@@ -27,33 +26,32 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                {{ post.body|safe }}
+                post body
                 <hr>
-                {% if current_user.id == 1 %}
+         
                 <div class="clearfix">
-                    <a class="btn btn-primary float-right" href="{{url_for('edit_post', post_id=post.id)}}">Edit
+                    <a class="btn btn-primary float-right" href="{{ url_for('edit_post') }}">Edit
                         Post</a>
                 </div>
-                {% endif %}
+              
 
 
                 <!--           Comments Area -->
 
                 {{ ckeditor.load() }}
                 {{ ckeditor.config(name='comment_text') }}
-                {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
 
 
                 <div class="col-lg-8 col-md-10 mx-auto comment">
-                    {% for comment in post.comments: %}
+                    {% for comment in range(5) %}
                     <ul class="commentList">
                         <li>
                             <div class="commenterImage">
-                                <img src="{{  }}"/>
+                                <img src="https://images.unsplash.com/photo-1638913660106-73b4bac0db09?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80"/>
                             </div>
                             <div class="commentText">
-                                {{comment.text|safe}}
-                                <span class="date sub-text">{{comment.comment_author.name}}</span>
+                            comment message
+                                <span class="date sub-text">comment author name</span>
 
                             </div>
                         </li>
@@ -68,5 +66,4 @@
 </article>
 
 <hr>
-{% include "footer.html" %}
 {% endblock %}

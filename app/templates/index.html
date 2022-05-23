@@ -18,10 +18,11 @@
 </header>
 
 <div class="container">
+  
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
       {% for post in range(10) %}
-      <div class="post-preview">
+      <a href="{{ url_for('view_one_post') }}"_>      <div class="post-preview" >
           <h2 class="post-title">
            post title
           </h2>
@@ -36,12 +37,13 @@
         
         </p>
       </div>
+      </a>
       {% endfor %}
 
 
   
       <div class="clearfix">
-        <a class="btn btn-primary float-right" >Create New Post</a>
+        <a class="btn btn-primary float-right" href="{{ url_for('create_post') }}">Create New Post</a>
     
     </div>
   </div>

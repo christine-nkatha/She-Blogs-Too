@@ -5,6 +5,7 @@ from flask_bootstrap import Bootstrap
 from sqlalchemy import false
 from app.forms import LoginForm
 import requests
+from flask_ckeditor import CKEditor
 
 from config import DevelopmentConfig
 
@@ -14,6 +15,7 @@ app.config.from_object(DevelopmentConfig)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
+ckeditor = CKEditor(app)
 
 #ui routes
 @app.route("/login",methods=['POST', 'GET'])
@@ -49,14 +51,16 @@ def registerUser():
 @app.route("/")
 def index():
     return render_template("index.html")
+@app.route("/one-post")
+def view_one_post():
+    return render_template("post.html")
 
 @app.route("/blog/create")
-def create_blog():
-    return render_template("make-post.html", isEdit=false, ckeditor=ckeditor)
-
-@app.route("/blog/update")
-def update_blog():
-    return "route to update blog"
+def create_post():
+    return render_template("make-post.html", is_edit=False)
+@app.route("/blog/edit")
+def edit_post():
+    return render_template("make-post.html", is_edit=True)
 
 @app.route("/blog/delete")
 def delete_blog():
