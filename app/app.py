@@ -88,9 +88,10 @@ def index():
     return render_template("index.html", posts=posts)
 @app.route("/one-post/<int:id>", methods=('GET', 'POST'))
 def view_one_post(id):
-    from models import Post
+    from models import Post, Comment
     post = Post.query.get(id)
-    return render_template("post.html", post=post)
+    comments = Comment.get_comments(id)
+    return render_template("post.html", post=post, comments=comments)
 
 @app.route("/blog/create",methods=('GET', 'POST'))
 
@@ -155,3 +156,15 @@ def update_comment():
 def delete_comment():
     return "route to delete comment"
 
+
+@app.route("/one-post/<int:id>/add_comment", methods=['POST'])
+def add_post_comment(id):
+    from models import Comment,Post
+    comment = Comment()
+    comment.comment = request.form["comment"]
+    comment.post_id=id
+    comment.save();
+    post = Post.query.get(id)
+    allcommnents = Comment.get_comments(id)
+    flash("comment added successfully")
+    return render_template("post.html", post=post, comments=allcommnents)

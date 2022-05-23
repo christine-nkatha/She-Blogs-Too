@@ -67,7 +67,6 @@ class Post(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
     comment = db.Column(db.Text())
 
@@ -87,13 +86,7 @@ class Comment(db.Model):
     def __repr__(self):
         return f'Comments: {self.comment}'
     
-    def serialize(self):
-        return {
-            'id': self.id, 
-            'name': self.name,
-            'author': self.author,
-            'published':self.published
-        }
+
 
     
 
