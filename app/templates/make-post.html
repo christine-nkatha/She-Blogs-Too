@@ -3,74 +3,54 @@
 
 {% block content %}
 
-  <!-- Page Header -->
-  <header class="masthead" style="background-image: url('/static/img/edit-bg.jpg')">
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="page-heading">
-            {% if is_edit %}
-            <h1>Edit Post</h1>
-            {% else %}
-            <h1>New Post</h1>
-            {% endif %}
-            <span class="subheading">You're going to make a great blog post!</span>
+<header class="masthead" style="min-height:100vh;background-image: url('/static/img/edit-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="d-flex flex-column text-white text-center mt-3">
+          {% if is_edit %}
+          <h1>Edit Post</h1>
+          {% else %}
+          <h1>New Post</h1>
+          {% endif %}
+          <span class="subheading">You're going to make a great blog post!</span>
+        </div>
+        <div class="container">
+          <form method="post" action="/blog/create">
+        
+          <div class="d-flex flex-column my-2 form-group">
+                <label for="title" class="text-white">Title</label>
+                <input type="text" name="title"
+                       placeholder="title" class="form-control" required/>
+               
           </div>
+            <div class="d-flex flex-column my-1 form-group">
+              <label for="subtitle" class="text-white">Subtitle</label>
+              <input type="text" name="subtitle"
+                     placeholder="subtitle" class="form-control" required/>
+             
+            </div>
+            <div class="d-flex flex-column my-1 form-group">
+              <label for="content">Post Content</label>
+              <br>
+              <textarea name="content"
+                        placeholder="post content"
+                        rows="5"
+                       
+                        ></textarea>
+            </div>
+          
+            <p class="d-flex justify-content-center">  
+                <button type="submit" class="btn rounded btn-success">Save Post</button>
+            </p>
+        </form>
         </div>
       </div>
     </div>
-  </header>
-
-  <div class="container">
-    <form method="post">
-      <p>
-          <label for="firstname">First Name</label>
-          <input type="text" name="firstname"
-                 placeholder="First name"/>
-         
-      </p>
-
-      <p>
-          <label for="lastname">Last Name</label>
-          <input type="text" name="lastname"
-                 placeholder="Last name"/>
-      
-      </p>
-
-      <p>
-          <label for="email">Email</label>
-          <input type="email" name="email"
-                 placeholder="Student email"/>
-         
-      </p>
-
-      <p>
-          <label for="age">Age</label>
-          <input type="number" name="age"
-                 placeholder="Age"/>
-      
-      </p>
-      <p>
-      <label for="bio">Bio</label>
-      <br>
-      <textarea name="bio"
-                placeholder="Bio"
-                rows="15"
-                cols="60"
-                ></textarea>
-      </p>
-      <p>
-          <button type="submit">Submit</button>
-      </p>
-  </form>
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        {{ ckeditor.load() }}
-        {{ ckeditor.config(name='body') }}
-      </div>
-    </div>
   </div>
+</header>
+
 
 {% endblock %}
 

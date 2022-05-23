@@ -1,5 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
-from flask_login import login_user
+from flask_login import login_required, login_user, logout_user
+from flask import session
+import flask_login
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from sqlalchemy import false
@@ -10,6 +12,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from config import DevelopmentConfig
 from flask_migrate import Migrate, MigrateCommand
+from flask_login import LoginManager, current_user
+
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
@@ -17,9 +21,17 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
 db.session.commit()
 ckeditor = CKEditor(app)
 migrate = Migrate(app, db)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    from models import User
+    return User.get(user_id)
 
 #ui routes
 @app.route("/login",methods=['POST', 'GET'])
@@ -64,16 +76,35 @@ def registerUser():
         return redirect(url_for('index'))
     return render_template("register.html",form=form)
 
+@app.route("/logout")
+def logout():
+    logout_user()
+    return render_template("index.html")
 #blog routes 
 @app.route("/")
 def index():
-    return render_template("index.html")
-@app.route("/one-post")
+    from models import Post
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts)
+@app.route("/one-post", methods=('GET', 'POST'))
 def view_one_post():
     return render_template("post.html")
 
-@app.route("/blog/create")
-def create_post():
+@app.route("/blog/create",methods=('GET', 'POST'))
+
+def create_post():   
+    from models import Post
+    if request.method == 'POST' :          
+        post  =  Post()
+        post.title= request.form['title']
+        post.subtitle= request.form['subtitle']
+        post.body = request.form['content']
+        post.owner_name= "kennedy"
+        post.user_id= "kennedy"
+        post.save()
+        flash('Post Saved Success',"success-toast")
+        return redirect(url_for('index'))
+      
     return render_template("make-post.html", is_edit=False)
 @app.route("/blog/edit")
 def edit_post():

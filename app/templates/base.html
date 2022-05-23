@@ -51,13 +51,20 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('get_random_blogs') }}">Random Quotes</a>
           </li>
-         
+         {% if not current_user.is_authenticated  %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('loginUser') }}">Login</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('registerUser') }}">Register</a>
           </li>
+          {% endif %}
+          {% if current_user.is_authenticated  %}
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </div>

@@ -26,6 +26,9 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
+    def get(id):
+        return User.query.get_or_404(id)
 
     def __repr__(self):
         return f'User: {self.username}'
@@ -45,7 +48,7 @@ class Post(db.Model):
     body = db.Column(db.String, nullable=False)
     subtitle = db.Column(db.String, nullable=False)
     user_id = db.Column(db.String, nullable=False)
-    post = db.Column(db.String, nullable=False)
+    owner_name = db.Column(db.String, nullable=False)
     comment = db.relationship('Comment', backref='post', lazy='dynamic')
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
