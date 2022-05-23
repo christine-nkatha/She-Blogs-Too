@@ -9,25 +9,22 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="d-flex flex-column text-white text-center mt-3">
-          {% if is_edit %}
           <h1>Edit Post</h1>
-          {% else %}
-          <h1>New Post</h1>
-          {% endif %}
+       
           <span class="subheading">You're going to make a great blog post!</span>
         </div>
         <div class="container">
-          <form method="post" action="/blog/create">
+          <form method="post" action="/blog/edit/{{post.id}}">
         
           <div class="d-flex flex-column my-2 form-group">
                 <label for="title" class="text-white">Title</label>
-                <input type="text" name="title"
+                <input type="text" name="title" value="{{post.title}}"
                        placeholder="title" class="form-control" required/>
                
           </div>
             <div class="d-flex flex-column my-1 form-group">
               <label for="subtitle" class="text-white">Subtitle</label>
-              <input type="text" name="subtitle"
+              <input type="text" name="subtitle" value="{{post.subtitle}}"
                      placeholder="subtitle" class="form-control" required/>
              
             </div>
@@ -37,12 +34,15 @@
               <textarea name="content"
                         placeholder="post content"
                         rows="5"
+                        
+                        
+                        
                        
-                        ></textarea>
+                        >{{post.body}}</textarea>
             </div>
             <div class="d-flex flex-column my-2 form-group">
               <label for="author" class="text-white">Author Name</label>
-              <input type="text" name="author"
+              <input type="text" name="author" value="{{post.owner_name}}"
                      placeholder="author name" class="form-control" required/>
              
         </div>

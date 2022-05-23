@@ -26,7 +26,7 @@
     
     </div>
       {% for post in posts %}
-      <a href="{{ url_for('view_one_post') }}"_>      <div class="post-preview" >
+      <a href="{{ url_for('view_one_post',id=post.id) }}"_>      <div class="post-preview" >
           <h2 class="post-title">
            {{post.title}}
           </h2>
